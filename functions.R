@@ -1,5 +1,9 @@
+library(dplyr)
+library(ggplot2)
+library(gridExtra)
 
 modelGen <- function(weighting,team1_name,team2_name){
+
 team1 <- data %>% filter(TeamName == team1_name)
 team2 <- data %>% filter(TeamName == team2_name)
 

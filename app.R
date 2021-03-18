@@ -5,13 +5,11 @@
 library(shiny)
 library(dplyr)
 library(knitr)
-library(kableExtra)
-library(kable)
 library(ggplot2)
 library(gridExtra)
 
-data <- read.csv('/Users/hanson377/Documents/GitHub/march_madness_pickem/data/team_data.csv')
-source('/Users/hanson377/Documents/GitHub/march_madness_pickem/functions.R')
+data <- read.csv('data/team_data.csv')
+source('functions.R')
 
 # Define UI ----
 ui <- fluidPage(
@@ -24,14 +22,14 @@ ui <- fluidPage(
       textInput("team2", h3("Team #2"), value = "E Washington"),
 
       h2('Select Offensive Weighting'),
-      numericInput("weighting", "Weighting", min = -1, max = 1, value = 0)
+      numericInput("weighting", "Weighting", min = -1, max = 1, value = .1)
     ),
 
     mainPanel(
       h1('Table Summary'),
       tableOutput("table_summary"),
 
-      h1('Scoring Differentials'),
+      h1('Scoring Differentials: Results from Simulations'),
       splitLayout(cellWidths = c("25%", "25%", "25%", '25%'), plotOutput("points_diff"),plotOutput("fgm2_diff"), plotOutput("fgm3_diff"),plotOutput("ftm_diff")),
 
       h1('Points Scored: Prior, Likelihood, Posterior'),
@@ -60,19 +58,19 @@ model_sims <- reactive({
 
 
   output$points_diff<-renderPlot({
-    ggplot(model_sims(),aes(x=PointsDiff)) + geom_histogram(binwidth=1) + geom_vline(xintercept=0,linetype='dashed',colour='red')
+    ggplot(model_sims(),aes(x=PointsDiff)) + geom_histogram(binwidth=1) + geom_vline(xintercept=0,linetype='dashed',colour='red') + xlab('Points') + ylab('Volume from Simluations')
   })
 
   output$fgm2_diff<-renderPlot({
-    ggplot(model_sims(),aes(x=FGM2Diff)) + geom_histogram(binwidth=1) + geom_vline(xintercept=0,linetype='dashed',colour='red')
+    ggplot(model_sims(),aes(x=FGM2Diff)) + geom_histogram(binwidth=1) + geom_vline(xintercept=0,linetype='dashed',colour='red') + xlab('FGM2') + ylab('')
   })
 
   output$fgm3_diff<-renderPlot({
-    ggplot(model_sims(),aes(x=FGM3Diff)) + geom_histogram(binwidth=1) + geom_vline(xintercept=0,linetype='dashed',colour='red')
+    ggplot(model_sims(),aes(x=FGM3Diff)) + geom_histogram(binwidth=1) + geom_vline(xintercept=0,linetype='dashed',colour='red') + xlab('FGM3') + ylab('')
   })
 
   output$ftm_diff<-renderPlot({
-    ggplot(model_sims(),aes(x=FTMDiff)) + geom_histogram(binwidth=1) + geom_vline(xintercept=0,linetype='dashed',colour='red')
+    ggplot(model_sims(),aes(x=FTMDiff)) + geom_histogram(binwidth=1) + geom_vline(xintercept=0,linetype='dashed',colour='red') + xlab('FTM') + ylab('')
   })
 
   output$points_model<-renderPlot({
