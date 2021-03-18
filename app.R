@@ -8,10 +8,10 @@ library(knitr)
 library(ggplot2)
 library(gridExtra)
 
-data <- read.csv('data/team_data.csv')
+data <- read.csv('data/team_data_new.csv')
 source('functions.R')
 
-#data <- read.csv('/Users/hanson377/Documents/GitHub/march_madness_pickem/data/team_data.csv')
+#data <- read.csv('/Users/hanson377/Documents/GitHub/march_madness_pickem/data/team_data_new.csv')
 #source('/Users/hanson377/Documents/GitHub/march_madness_pickem/functions.R')
 
 
