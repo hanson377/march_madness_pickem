@@ -42,30 +42,30 @@ T2OppFTM <- max(team2$OppFTM)*DMultiplier
 trials <- 50000
 
 ## general models with gamma distribution
-T1FGM3_posterior = rgamma(trials,(T1FGM3+T2OppFGM3),(T1Games+T2Games))
-T1FGM3_prior = rgamma(trials,T2OppFGM3,T2Games)
-T1FGM3_likelihood = rgamma(trials,T1FGM3,T1Games)
+T1FGM3_posterior = rgamma(trials,(T1FGM3+T2OppFGM3),((T1Games*OMultiplier)+(T2Games*DMultiplier)))
+T1FGM3_prior = rgamma(trials,T2OppFGM3,(T2Games*DMultiplier))
+T1FGM3_likelihood = rgamma(trials,T1FGM3,(T1Games*OMultiplier))
 
-T1FGM2_posterior = rgamma(trials,(T1FGM2+T2OppFGM2),(T1Games+T2Games))
-T1FGM2_prior = rgamma(trials,T2OppFGM2,T2Games)
-T1FGM2_likelihood = rgamma(trials,T1FGM2,T1Games)
+T1FGM2_posterior = rgamma(trials,(T1FGM2+T2OppFGM2),((T1Games*OMultiplier)+(T2Games*DMultiplier)))
+T1FGM2_prior = rgamma(trials,T2OppFGM2,(T2Games*DMultiplier))
+T1FGM2_likelihood = rgamma(trials,T1FGM2,(T1Games*OMultiplier))
 
-T1FTM_posterior = rgamma(trials,(T1FTM+T2OppFTM),(T1Games+T2Games))
-T1FTM_prior = rgamma(trials,T2OppFTM,T2Games)
-T1FTM_likelihood = rgamma(trials,T1FTM,T1Games)
+T1FTM_posterior = rgamma(trials,(T1FTM+T2OppFTM),((T1Games*OMultiplier)+(T2Games*DMultiplier)))
+T1FTM_prior = rgamma(trials,T2OppFTM,(T2Games*DMultiplier))
+T1FTM_likelihood = rgamma(trials,T1FTM,(T1Games*OMultiplier))
 
 
-T2FGM3_posterior = rgamma(trials,(T2FGM3+T1OppFGM3),(T1Games+T2Games))
-T2FGM3_prior = rgamma(trials,T1OppFGM3,T1Games)
-T2FGM3_likelihood = rgamma(trials,T2FGM3,T2Games)
+T2FGM3_posterior = rgamma(trials,(T2FGM3+T1OppFGM3),((T1Games*DMultiplier)+(T2Games*OMultiplier)))
+T2FGM3_prior = rgamma(trials,T1OppFGM3,(T1Games*DMultiplier))
+T2FGM3_likelihood = rgamma(trials,T2FGM3,(T2Games*OMultiplier))
 
-T2FGM2_posterior = rgamma(trials,(T2FGM2+T1OppFGM2),(T1Games+T2Games))
-T2FGM2_prior = rgamma(trials,T1OppFGM2,T1Games)
-T2FGM2_likelihood = rgamma(trials,T2FGM2,T2Games)
+T2FGM2_posterior = rgamma(trials,(T2FGM2+T1OppFGM2),((T1Games*DMultiplier)+(T2Games*OMultiplier)))
+T2FGM2_prior = rgamma(trials,T1OppFGM2,(T1Games*DMultiplier))
+T2FGM2_likelihood = rgamma(trials,T2FGM2,(T2Games*OMultiplier))
 
-T2FTM_posterior = rgamma(trials,(T2FTM+T1OppFTM),(T1Games+T2Games))
-T2FTM_prior = rgamma(trials,T1OppFTM,T1Games)
-T2FTM_likelihood = rgamma(trials,T2FTM,T2Games)
+T2FTM_posterior = rgamma(trials,(T2FTM+T1OppFTM),((T1Games*DMultiplier)+(T2Games*OMultiplier)))
+T2FTM_prior = rgamma(trials,T1OppFTM,(T1Games*DMultiplier))
+T2FTM_likelihood = rgamma(trials,T2FTM,(T2Games*OMultiplier))
 
 model <- data.frame(T1FGM3_posterior,T1FGM2_posterior,T1FTM_posterior,T2FGM3_posterior,T2FGM2_posterior,T2FTM_posterior,T1FGM3_prior,T1FGM3_likelihood,T1FGM2_prior,T1FGM2_likelihood,T2FGM2_likelihood,T2FGM2_prior,T2FGM3_prior,T2FGM3_likelihood,T2FTM_prior,T2FTM_likelihood,T1FTM_prior,T1FTM_likelihood,T2FTM_prior,T2FTM_likelihood)
 

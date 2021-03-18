@@ -11,6 +11,10 @@ library(gridExtra)
 data <- read.csv('data/team_data.csv')
 source('functions.R')
 
+##data <- read.csv('/Users/hanson377/Documents/GitHub/march_madness_pickem/data/team_data.csv')
+##source('/Users/hanson377/Documents/GitHub/march_madness_pickem/functions.R')
+
+
 # Define UI ----
 ui <- fluidPage(
   titlePanel("March Madness 2021: Pick'em Bayesian Style"),
