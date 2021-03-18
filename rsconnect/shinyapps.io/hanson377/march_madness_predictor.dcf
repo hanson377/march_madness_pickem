@@ -1,0 +1,12 @@
+name: march_madness_predictor
+title: march_madness_predictor
+username:
+account: hanson377
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3815894
+bundleId: 4365069
+url: https://hanson377.shinyapps.io/march_madness_predictor/
+when: 1616091640.04051
+asMultiple: FALSE
+asStatic: FALSE
