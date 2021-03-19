@@ -2,10 +2,17 @@ library(dplyr)
 library(ggplot2)
 library(gridExtra)
 
-modelGen <- function(weighting,team1_name,team2_name){
+modelGen <- function(teamlist,weighting,team1_name,team2_name){
 
-team1 <- data %>% filter(TeamName == team1_name)
-team2 <- data %>% filter(TeamName == team2_name)
+team1_param <- teamlist %>% filter(num == team1_name) %>% mutate(team1name = var)
+team1_param <- max(team1_param$team1name)
+
+team2_param <- teamlist %>% filter(num == team2_name) %>% mutate(team2name = var)
+team2_param <- max(team2_param$team2name)
+
+
+team1 <- data %>% filter(TeamName == team1_param)
+team2 <- data %>% filter(TeamName == team2_param)
 
 OMultiplier <- 1+weighting
 DMultiplier <- 1-weighting
@@ -67,7 +74,12 @@ T2FTM_posterior = rgamma(trials,(T2FTM+T1OppFTM),((T1Games*DMultiplier)+(T2Games
 T2FTM_prior = rgamma(trials,T1OppFTM,(T1Games*DMultiplier))
 T2FTM_likelihood = rgamma(trials,T2FTM,(T2Games*OMultiplier))
 
-model <- data.frame(T1FGM3_posterior,T1FGM2_posterior,T1FTM_posterior,T2FGM3_posterior,T2FGM2_posterior,T2FTM_posterior,T1FGM3_prior,T1FGM3_likelihood,T1FGM2_prior,T1FGM2_likelihood,T2FGM2_likelihood,T2FGM2_prior,T2FGM3_prior,T2FGM3_likelihood,T2FTM_prior,T2FTM_likelihood,T1FTM_prior,T1FTM_likelihood,T2FTM_prior,T2FTM_likelihood)
+## names
+Team1 <- team1_param
+Team2 <- team2_param
+
+
+model <- data.frame(Team1,Team2,T1FGM3_posterior,T1FGM2_posterior,T1FTM_posterior,T2FGM3_posterior,T2FGM2_posterior,T2FTM_posterior,T1FGM3_prior,T1FGM3_likelihood,T1FGM2_prior,T1FGM2_likelihood,T2FGM2_likelihood,T2FGM2_prior,T2FGM3_prior,T2FGM3_likelihood,T2FTM_prior,T2FTM_likelihood,T1FTM_prior,T1FTM_likelihood,T2FTM_prior,T2FTM_likelihood)
 
 model$T1Points <- (model$T1FGM2_posterior*2)+(model$T1FGM3_posterior*3)+(model$T1FTM_posterior*1)
 model$T1Points_prior <- (model$T1FGM2_prior*2)+(model$T1FGM3_prior*3)+(model$T1FTM_prior*1)
@@ -86,8 +98,6 @@ return(model)
 }
 
 genViewPoints <- function(weighting,team1,team2){
-
-  simulations <- modelGen(weighting,team1,team2)
 
   prior <- simulations %>% select(value = T1Points_prior) %>% mutate(model = 'prior')
   likelihood <- simulations %>% select(value = T1Points_likelihood) %>% mutate(model = 'likelihood')
@@ -119,7 +129,7 @@ genViewPoints <- function(weighting,team1,team2){
 
 genViewFGM2 <- function(weighting,team1,team2){
 
-  simulations <- modelGen(weighting,team1,team2)
+  simulations <- modelGen(choices,weighting,team1,team2)
 
   prior <- simulations %>% select(value = T1FGM2_prior) %>% mutate(model = 'prior')
   likelihood <- simulations %>% select(value = T1FGM2_likelihood) %>% mutate(model = 'likelihood')
@@ -151,7 +161,7 @@ genViewFGM2 <- function(weighting,team1,team2){
 
 genViewFGM3 <- function(weighting,team1,team2){
 
-  simulations <- modelGen(weighting,team1,team2)
+  simulations <- modelGen(choices,weighting,team1,team2)
 
   prior <- simulations %>% select(value = T1FGM3_prior) %>% mutate(model = 'prior')
   likelihood <- simulations %>% select(value = T1FGM3_likelihood) %>% mutate(model = 'likelihood')
@@ -183,7 +193,9 @@ genViewFGM3 <- function(weighting,team1,team2){
 
 genViewFTM <- function(weighting,team1,team2){
 
-  simulations <- modelGen(weighting,team1,team2)
+  simulations <- modelGen(choices,weighting,team1,team2)
+
+
 
   prior <- simulations %>% select(value = T1FTM_prior) %>% mutate(model = 'prior')
   likelihood <- simulations %>% select(value = T1FTM_likelihood) %>% mutate(model = 'likelihood')
@@ -215,7 +227,7 @@ genViewFTM <- function(weighting,team1,team2){
 
 genTable <- function(weighting,team1,team2){
 
-  simulations <- modelGen(weighting,team1,team2)
+  simulations <- modelGen(choices,weighting,team1,team2)
 
   prob_win <- sum(simulations$T1Points >= simulations$T2Points)/nrow(simulations)
 
